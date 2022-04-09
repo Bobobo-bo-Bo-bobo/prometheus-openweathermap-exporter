@@ -6,8 +6,9 @@ mod constants;
 mod exporter;
 mod http;
 mod logging;
+mod openweathermap;
 mod usage;
-    
+
 use getopts::Options;
 use log::error;
 use std::{env, process};
@@ -83,10 +84,9 @@ fn main() {
     };
 
     exporter::register();
-    
+
     if let Err(e) = http::server(config, &listen_address) {
         error!("Cen't start HTTP server: {}", e);
         process::exit(1);
     };
-
 }

@@ -4,7 +4,6 @@ use std::fs;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Configuration {
-    pub units: Option<String>,
     pub api_key: String,
     pub locations: Vec<String>,
     pub timeout: Option<u64>,

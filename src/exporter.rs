@@ -78,6 +78,43 @@ lazy_static! {
         &["name", "country"],
     )
     .unwrap();
+    pub static ref CLOUD: GaugeVec = GaugeVec::new(
+        Opts::new(constants::METRIC_CLOUD_NAME, constants::METRIC_CLOUD_HELP,),
+        &["name", "country"],
+    )
+    .unwrap();
+    pub static ref RAIN_1H: GaugeVec = GaugeVec::new(
+        Opts::new(
+            constants::METRIC_RAIN_1H_NAME,
+            constants::METRIC_RAIN_1H_HELP
+        ),
+        &["name", "country"],
+    )
+    .unwrap();
+    pub static ref RAIN_3H: GaugeVec = GaugeVec::new(
+        Opts::new(
+            constants::METRIC_RAIN_3H_NAME,
+            constants::METRIC_RAIN_3H_HELP
+        ),
+        &["name", "country"],
+    )
+    .unwrap();
+    pub static ref SNOW_1H: GaugeVec = GaugeVec::new(
+        Opts::new(
+            constants::METRIC_SNOW_1H_NAME,
+            constants::METRIC_SNOW_1H_HELP
+        ),
+        &["name", "country"],
+    )
+    .unwrap();
+    pub static ref SNOW_3H: GaugeVec = GaugeVec::new(
+        Opts::new(
+            constants::METRIC_SNOW_3H_NAME,
+            constants::METRIC_SNOW_3H_HELP
+        ),
+        &["name", "country"],
+    )
+    .unwrap();
 }
 
 pub fn register() {
@@ -96,6 +133,11 @@ pub fn register() {
     REGISTRY.register(Box::new(WIND_SPEED.clone())).unwrap();
     REGISTRY.register(Box::new(WIND_GUST.clone())).unwrap();
     REGISTRY.register(Box::new(WIND_DIRECTION.clone())).unwrap();
+    REGISTRY.register(Box::new(CLOUD.clone())).unwrap();
+    REGISTRY.register(Box::new(RAIN_1H.clone())).unwrap();
+    REGISTRY.register(Box::new(RAIN_3H.clone())).unwrap();
+    REGISTRY.register(Box::new(SNOW_1H.clone())).unwrap();
+    REGISTRY.register(Box::new(SNOW_3H.clone())).unwrap();
 }
 
 fn update_metrics(cfg: &config::Configuration) {
@@ -105,15 +147,12 @@ fn update_metrics(cfg: &config::Configuration) {
         Ok(v) => v,
         Err(e) => panic!("Can't build HTTP client structure: {}", e),
     };
-    let units = cfg
-        .units
-        .unwrap_or_else(|| constants::DEFAULT_OWM_UNITS.to_string());
     for location in cfg.locations {
         let url = format!(
             "{}?q={}&units={}&APPID={}",
             constants::OWM_URL,
             location,
-            units,
+            constants::DEFAULT_OWM_UNITS,
             cfg.api_key
         );
 
@@ -192,13 +231,17 @@ fn update_metrics(cfg: &config::Configuration) {
         WIND_SPEED
             .with_label_values(&[&data.name, &data.sys.country])
             .set(data.wind.speed);
-        debug!(
-            "Setting openweathermap_wind_gust_speed_kilometers_per_hour {} {} -> {}",
-            data.name, data.sys.country, data.wind.gust
-        );
-        WIND_GUST
-            .with_label_values(&[&data.name, &data.sys.country])
-            .set(data.wind.gust);
+
+        if let Some(gust) = data.wind.gust {
+            debug!(
+                "Setting openweathermap_wind_gust_speed_kilometers_per_hour {} {} -> {}",
+                data.name, data.sys.country, gust
+            );
+            WIND_GUST
+                .with_label_values(&[&data.name, &data.sys.country])
+                .set(gust);
+        }
+
         debug!(
             "Setting openweathermap_wind_direction_degree {} {} -> {}",
             data.name, data.sys.country, data.wind.deg
@@ -206,6 +249,61 @@ fn update_metrics(cfg: &config::Configuration) {
         WIND_DIRECTION
             .with_label_values(&[&data.name, &data.sys.country])
             .set(data.wind.deg as i64);
+        debug!(
+            "Setting openweathermap_cloud_coverage_percent {} {} -> {}",
+            data.name,
+            data.sys.country,
+            data.clouds.all as f64 / 100.0
+        );
+        CLOUD
+            .with_label_values(&[&data.name, &data.sys.country])
+            .set(data.clouds.all as f64 / 100.0);
+
+        if let Some(rain) = data.rain {
+            if let Some(one_h) = rain.one_h {
+                debug!(
+                    "Setting openweathermap_rain_precipation_last_hour_millimeter {} {} -> {}",
+                    data.name, data.sys.country, one_h
+                );
+                RAIN_1H
+                    .with_label_values(&[&data.name, &data.sys.country])
+                    .set(one_h);
+            }
+            if let Some(three_h) = rain.three_h {
+                debug!(
+                    "Setting openweathermap_rain_precipation_last_three_hours_millimeter {} {} -> {}",
+                    data.name,
+                    data.sys.country,
+                    three_h
+                );
+                RAIN_3H
+                    .with_label_values(&[&data.name, &data.sys.country])
+                    .set(three_h);
+            }
+        }
+
+        if let Some(snow) = data.snow {
+            if let Some(one_h) = snow.one_h {
+                debug!(
+                    "Setting openweathermap_snow_precipation_last_hour_millimeter {} {} -> {}",
+                    data.name, data.sys.country, one_h
+                );
+                SNOW_1H
+                    .with_label_values(&[&data.name, &data.sys.country])
+                    .set(one_h);
+            }
+            if let Some(three_h) = snow.three_h {
+                debug!(
+                    "Setting openweathermap_snow_precipation_last_three_hours_millimeter {} {} -> {}",
+                    data.name,
+                    data.sys.country,
+                    three_h
+                );
+                SNOW_3H
+                    .with_label_values(&[&data.name, &data.sys.country])
+                    .set(three_h);
+            }
+        }
     }
 }
 

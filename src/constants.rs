@@ -1,5 +1,5 @@
 pub const NAME: &str = "prometheus-openweathermap-exporter";
-pub const VERSION: &str = "0.1.0-20220408";
+pub const VERSION: &str = "1.0.0";
 pub const DEFAULT_PROMETHEUS_ADDRESS: &str = "localhost:9943";
 pub const REPO_URL: &str = "https://ypbind.de/cgit/prometheus-openweathermap-exporter/";
 
@@ -30,3 +30,13 @@ pub const METRIC_WIND_GUST_NAME: &str = "openweathermap_wind_gust_speed_meters_p
 pub const METRIC_WIND_GUST_HELP: &str = "Wind gust speed";
 pub const METRIC_WIND_DIRECTION_NAME: &str = "openweathermap_wind_direction_degree";
 pub const METRIC_WIND_DIRECTION_HELP: &str = "Wind direction";
+pub const METRIC_CLOUD_NAME: &str = "openweathermap_cloud_coverage_percent";
+pub const METRIC_CLOUD_HELP: &str = "Cloud coverage";
+pub const METRIC_RAIN_1H_NAME: &str = "openweathermap_rain_precipation_last_hour_millimeter";
+pub const METRIC_RAIN_1H_HELP: &str = "Rain precipitation volume for last hour";
+pub const METRIC_RAIN_3H_NAME: &str = "openweathermap_rain_precipation_last_three_hours_millimeter";
+pub const METRIC_RAIN_3H_HELP: &str = "Rain precipitation volume for last three hours";
+pub const METRIC_SNOW_1H_NAME: &str = "openweathermap_snow_precipation_last_hour_millimeter";
+pub const METRIC_SNOW_1H_HELP: &str = "Snow precipitation volume for last hour";
+pub const METRIC_SNOW_3H_NAME: &str = "openweathermap_snow_precipation_last_three_hours_millimeter";
+pub const METRIC_SNOW_3H_HELP: &str = "Snow precipitation volume for last three hours";

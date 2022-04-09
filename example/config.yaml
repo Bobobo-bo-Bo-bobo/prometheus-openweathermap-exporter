@@ -1,0 +1,7 @@
+---
+api_key: '<our_api_key_here>'
+locations:
+  - 'London,gb'
+  - 'Ohio,us'
+# HTTP timeout
+timeout: 15

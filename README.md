@@ -1,5 +1,5 @@
 # Preface
-[IOpenWeatherMap](https://openweathermap.org) provides an API for global weather data. The exporter request weather data and exports it for [Prometheus](https://prometheus.io).
+[OpenWeatherMap](https://openweathermap.org) provides an API for global weather data. The exporter request weather data and exports it for [Prometheus](https://prometheus.io).
 
 # Repositories
 * Primary development repository: https://git.ypbind.de/cgit/prometheus-openweathermap-exporter/

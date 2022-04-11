@@ -7,6 +7,7 @@
 
 # Building
 To build this exporter a recent Rust toolchain of at least version 1.58 or newer is required.
+Additionally the development package for OpenSSL must be installed to build this program.
 
 # Running
 ## API Key

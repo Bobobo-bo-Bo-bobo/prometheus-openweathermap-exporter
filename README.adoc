@@ -1,64 +1,78 @@
-# Preface
-[OpenWeatherMap](https://openweathermap.org) provides an API for global weather data. The exporter request weather data and exports it for [Prometheus](https://prometheus.io).
+= prometheus-openweathermap-exporter
+:stylesheet: asciidoc.css
 
-# Repositories
+== Repositories
+
 * Primary development repository: https://git.ypbind.de/cgit/prometheus-openweathermap-exporter/
 * Backup repository: https://github.com/Bobobo-bo-Bo-bobo/prometheus-openweathermap-exporter
 
-# Building
-To build this exporter a recent Rust toolchain of at least version 1.58 or newer is required.
-Additionally the development package for OpenSSL must be installed to build this program.
+== Preface
 
-# Running
-## API Key
-To access the OpenweatherMap API, an API key to request "Current Weather Data" is required and can be obtained [here](https://openweathermap.org/api)
+https://openweathermap.org[OpenWeatherMap] provides an API for global weather data. The exporter request weather data and exports it for https://prometheus.io[Prometheus].
 
-## Configuration
+== Building
+
+To build this exporter a recent Rust toolchain of at least version 1.58 or newer is required. Additionally the development package for OpenSSL must be installed to build this program.
+
+== Running
+
+=== API Key
+
+To access the OpenweatherMap API, an API key to request ``Current Weather Data'' is required and can be obtained https://openweathermap.org/api[here]
+
+=== Configuration
+
 The configuration file of this exporter is in YAML format, e.g.:
 
-```yaml
+[source,yaml]
+----
 ---
 api_key: '<our_api_key_here>'
 locations:
   - 'London,gb'
   - 'Ohio,us'
 timeout: 15
-```
+----
 
-**Mandatory configuration** are `api_key` and the list of locations to query.
-*Optional configuratio* is the HTTP `timeout` value for requests.
+*Mandatory configuration* are `api_key` and the list of locations to query. _Optional configuratio_ is the HTTP `timeout` value for requests.
 
-## Command line parameters
+=== Command line parameters
 
-| *Option* | *Parameter* | *Default* | *Description* |
-|:---------|:------------|:----------|:--------------|
-| `-D` / `--debug` | - | - | Enable debug mode |
-| `-V` / `--version` | - | - | Show version information |
-| `-c` / `--config` | `<config_file>` | - | Configuration file |
-| `-l` / `--listen` | `<listen_addr>` | `` | Listen on <address> for scrape requests |
-| `-q` / `--quiet` | - | - | Quiet operation. Only log warning and error messages |
+[width="100%",cols="<22%,<26%,<22%,<30%",options="header",]
+|===
+|_Option_ |_Parameter_ |_Default_ |_Description_
+|`-D` / `--debug` |- |- |Enable debug mode
+|`-V` / `--version` |- |- |Show version information
+|`-c` / `--config` |`<config_file>` |- |Configuration file
+|`-l` / `--listen` |`<listen_addr>` |``| Listen on <address> for scrape requests | |`-q`/`–quiet` |-
+|===
 
-## Exported metrics
-| *Name* | *Description |
-|:-------|:-------------|
-| `openweathermap_temperature_celsius` | Temperature |
-| `openweathermap_apparent_temperature_celsius` | Apparent temperature |
-| `openweathermap_minimal_temperature_celsius` | Minimal temperature |
-| `openweathermap_maximal_temperature_celsius` | Maximal temperature |
-| `openweathermap_pressure_pascal` | Air pressure |
-| `openweathermap_humidity_percent` | Relative humidity |
-| `openweathermap_wind_speed_meters_per_hour` | Wind speed |
-| `openweathermap_wind_speed_meters_per_hour` | Wind gust speed |
-| `openweathermap_wind_direction_degree` | Wind direction |
-| `openweathermap_cloud_coverage_percent` | Cloud coverage |
-| `openweathermap_rain_precipation_last_hour_millimeter` | Rain precipation, last hour |
-| `openweathermap_rain_precipation_last_three_hours_millimeter` | Rain precipation, last three hours |
-| `openweathermap_snow_precipation_last_hour_millimeter` | Snow precipation, last hour |
-| `openweathermap_snow_precipation_last_three_hours_millimeter` | Snow precipation, last three hours |
+=== Exported metrics
 
-# License
-## prometheus-openweathermap-exporter
-```
+[width="100%",cols="<37%,<63%",options="header",]
+|===
+|_Name_ |*Description
+|`openweathermap_temperature_celsius` |Temperature
+|`openweathermap_apparent_temperature_celsius` |Apparent temperature
+|`openweathermap_minimal_temperature_celsius` |Minimal temperature
+|`openweathermap_maximal_temperature_celsius` |Maximal temperature
+|`openweathermap_pressure_pascal` |Air pressure
+|`openweathermap_humidity_percent` |Relative humidity
+|`openweathermap_wind_speed_meters_per_hour` |Wind speed
+|`openweathermap_wind_speed_meters_per_hour` |Wind gust speed
+|`openweathermap_wind_direction_degree` |Wind direction
+|`openweathermap_cloud_coverage_percent` |Cloud coverage
+|`openweathermap_rain_precipation_last_hour_millimeter` |Rain precipation, last hour
+|`openweathermap_rain_precipation_last_three_hours_millimeter` |Rain precipation, last three hours
+|`openweathermap_snow_precipation_last_hour_millimeter` |Snow precipation, last hour
+|`openweathermap_snow_precipation_last_three_hours_millimeter` |Snow precipation, last three hours
+|===
+
+== License
+
+=== prometheus-openweathermap-exporter
+
+....
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -733,5 +747,4 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
-```
-
+....

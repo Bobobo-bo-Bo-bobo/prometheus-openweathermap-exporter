@@ -1,5 +1,7 @@
-= prometheus-openweathermap-exporter
+= prometheus-openweathermap-exporter - Export OpenweatherMap data to Prometheus
+:source-highlighter: pygments
 :stylesheet: asciidoc.css
+:toc: left
 
 == Repositories
 
